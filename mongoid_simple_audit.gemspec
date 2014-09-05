@@ -1,10 +1,7 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-
 require 'mongoid/simple_audit/version'
-
-# check: https://github.com/digitalplaywright/mongoid-slug/blob/master/mongoid_slug.gemspec
 
 Gem::Specification.new do |spec|
   spec.name          = "mongoid_simple_audit"
@@ -15,9 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Provides a straightforward way for auditing changes on active record models, especially for composite entities. Also provides helper methods for easily rendering an audit trail in Ruby on Rails views.}
   spec.homepage      = "https://github.com/felixabele/mongoid_simple_audit.git"
   spec.license       = "MIT"
-
-  spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.files         = Dir.glob('lib/**/*')
   spec.test_files    = spec.files.grep(%r{^(spec)/})
   spec.require_paths = ["lib"]
   
