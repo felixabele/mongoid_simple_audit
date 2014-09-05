@@ -6,7 +6,7 @@ require 'active_record'
 require 'factory_girl_rails'
 require 'bundler'
 require 'logger'
-require 'rspec-rails'
+#require 'rspec-rails'
 require 'database_cleaner'
 require 'mongoid_simple_audit'
 
