@@ -6,7 +6,7 @@ module Mongoid
       
       # Render the change log for the given audited model
       def render_audits(audited_model)
-        return '' unless audited_model.respond_to?(:audit)
+        return '' if !audited_model.respond_to?(:audit) || audited_model.audit.nil?
         audits = (audited_model.audit.modifications).dup.sort{|a,b| b.created_at <=> a.created_at}
         res = ''
         audits.each_with_index do |audit, index|
