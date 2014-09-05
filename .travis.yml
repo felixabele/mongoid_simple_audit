@@ -9,6 +9,8 @@ script: 'bundle exec rake'
 
 services:
   - mongodb
+before_script:
+  - sleep 15  
 
 notifications:
   email:
