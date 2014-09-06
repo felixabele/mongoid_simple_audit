@@ -1,3 +1,5 @@
+require 'coveralls'
+Coveralls.wear!
 $:.unshift(File.join(File.dirname(__FILE__),'..','lib'))
 
 require 'mongoid'
@@ -5,9 +7,6 @@ require 'rubygems'
 require 'active_record'
 require 'factory_girl_rails'
 require 'bundler'
-require 'logger'
-#require 'rspec-rails'
-require 'database_cleaner'
 require 'mongoid_simple_audit'
 
 def database_id

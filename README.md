@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/felixabele/mongoid_simple_audit.svg?branch=master)](https://travis-ci.org/felixabele/mongoid_simple_audit) 
+
 # MongoidSimpleAudit
 
 This is modified version of the Gem simple_audit from Gabriel Tarnovan (https://github.com/gtarnovan/simple_audit) wich uses MongoDB with Mongoid instead of ActiveRecord.
