@@ -37,6 +37,10 @@ Or install it yourself as:
 
     $ gem install mongoid_simple_audit
 
+Don't forget to create the MongoDB indeces
+
+    rake db:mongoid:create_indexes
+
 ## Usage
 
   class Booking < ActiveRecord::Base

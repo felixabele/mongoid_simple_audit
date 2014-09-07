@@ -1,3 +1,5 @@
+# rake mongoid_simple_audit:migrates_from_mysql_to_mongoid
+
 namespace :mongoid_simple_audit do
   
   desc "Migrates all datasets from simple audit ActiveRecord Gem into MongoDB"
@@ -28,18 +30,22 @@ namespace :mongoid_simple_audit do
         puts "migrated #{current_count}. #{total_count-current_count} remaining"
       end
 
-      ds = {          
-        action: audit.action,
-        created_at: audit.created_at,
-        change_log: audit.change_log
-      }
-      if audit.user_id.present?
-        ds.merge!({
-          user: {id: audit.user_id, type: audit.user_type},
-          username: audit.username
-        })
+      begin
+        ds = {          
+          action: audit.action,
+          created_at: audit.created_at,
+          change_log: audit.change_log
+        }
+        if audit.user_id.present?
+          ds.merge!({
+            user: {id: audit.user_id, type: audit.user_type},
+            username: audit.username
+          })
+        end
+        new_audit.modifications.create( ds )
+      rescue Exception => e 
+        puts "could not copy audit with ID: #{audit.id} because: #{e.message}"
       end
-      new_audit.modifications.create( ds )
     end
   end
 end
