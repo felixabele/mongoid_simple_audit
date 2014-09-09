@@ -144,9 +144,11 @@ A helper method for displaying a list of audits is provided. It will render a de
 only the differences between revisions will be shown, thus making the audit information easily readable.
 
 ## Why I consider the MongoDB Version more suitable to the original with ActiveRecord
+
 1. Changed attributes are natively searchable by the database
 2. Better perfomance
 3. High scalability
+4. It supports the Mongoid wrapper  
 
 Negative aspect though, its not working nicely hand in hand with not MongoDB backends
 

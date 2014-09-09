@@ -4,7 +4,7 @@ module Mongoid
       include Mongoid::Document
 
       field :auditable_type,  type: String
-      field :auditable_id,    type: Integer
+      field :auditable_id,    type: String
 
       index({ auditable_id: 1, auditable_type: 1 })
 

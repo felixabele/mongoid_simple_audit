@@ -1,6 +1,5 @@
+# spec/models/simple_mongo_audit_spec.rb
 require 'spec_helper'
-
-# spec/simple_mongo_audit_spec.rb
 
 module Mongoid  
 
@@ -55,6 +54,11 @@ module Mongoid
       address = Address.create
       expect( User.new.full_name ).to eql address.audit.modifications.last.username
     end
+
+    it 'should audit Mongoid models' do 
+      address = MongoidAddress.create(name: 'Hans', street: 'Sesamstr. 18')
+      expect( address.audit.modifications ).not_to be_empty
+    end    
   end
 
 end  

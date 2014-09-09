@@ -8,6 +8,10 @@ if defined?(ActiveRecord::Base)
   ActiveRecord::Base.send :include, Mongoid::SimpleAudit::Model
 end
 
+if defined?(Mongoid::Document)
+  Mongoid::Document.send :include, Mongoid::SimpleAudit::Model
+end
+
 if defined?(ActionView::Base)
   ActionView::Base.send :include, Mongoid::SimpleAudit::Helper
 end

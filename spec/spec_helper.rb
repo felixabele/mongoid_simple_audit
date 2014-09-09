@@ -77,6 +77,11 @@ class Address < ActiveRecord::Base
   simple_audit( username_method: :full_name )
 end
 
+class MongoidAddress  
+  include Mongoid::Document
+  simple_audit
+end
+
 class Person < ActiveRecord::Base
   has_one :address
   simple_audit( audit_changes_only: true ) do |record|

@@ -10,13 +10,18 @@
 module Mongoid
 
   module SimpleAudit
-    module Model
-      extend ActiveSupport::Concern
 
-      def audit
-        Audit.find_by_auditable( self )
+    module Model
+      def self.included(base) #:nodoc:
+        base.send :extend, ClassMethods
+        base.send :include, InstanceMethods
       end
 
+      module InstanceMethods
+        def audit
+          Audit.find_by_auditable( self )
+        end
+      end
 
       module ClassMethods
 
@@ -67,6 +72,7 @@ module Mongoid
             audit_changes_proc = block_given? ? block.to_proc : attributes_and_associations
             
             self.audit_changes = audit_changes_proc
+
             after_create {|record| record.class.audit(record, :create, nil)}
             after_update {|record| record.class.audit(record, :update, nil)}
           end
@@ -107,7 +113,8 @@ module Mongoid
           end
 
         end
-      end  
+      end
+      
     end
   end
 end
