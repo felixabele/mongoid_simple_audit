@@ -3,6 +3,7 @@ module Mongoid
     class Modification
       include Mongoid::Document
       include Mongoid::Timestamps::Created
+      include Mongoid::Attributes::Dynamic if Mongoid::VERSION.to_i > 3
 
       field :action,      type: String
       field :username,    type: String
@@ -44,10 +45,11 @@ module Mongoid
       end
 
       # as mongoid stores hashes keys as strings, here us a way to get the change log symbolized
+      # TODO: refactor
       def symbolized_change_log
         sym_log = self.change_log.dup
-        sym_log.symbolize_keys!
-        sym_log.each{ |k,v| v.symbolize_keys! if v.is_a? Hash }
+        sym_log = sym_log.symbolize_keys
+        sym_log.each{ |k,v| sym_log[k] = v.symbolize_keys if v.is_a? Hash }
         sym_log
       end
     end

@@ -18,6 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   
   spec.add_dependency "mongoid" #, '>= 3.0', '< 4.0.0'
+  spec.add_development_dependency "appraisal"
   spec.add_development_dependency "activerecord"  
   spec.add_development_dependency "factory_girl_rails"  
   spec.add_development_dependency "sqlite3"  

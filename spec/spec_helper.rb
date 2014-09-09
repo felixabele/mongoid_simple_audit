@@ -79,6 +79,7 @@ end
 
 class MongoidAddress  
   include Mongoid::Document
+  include Mongoid::Attributes::Dynamic if Mongoid::VERSION.to_i > 3
   simple_audit
 end
 
