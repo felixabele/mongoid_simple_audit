@@ -2,16 +2,20 @@
 
 # MongoidSimpleAudit
 
-This is modified version of the Gem simple_audit from Gabriel Tarnovan (https://github.com/gtarnovan/simple_audit) wich uses MongoDB with Mongoid to store audit logs instead of ActiveRecord.
+This is a modified version of the Gem simple_audit from Gabriel Tarnovan (https://github.com/gtarnovan/simple_audit) wich uses MongoDB with Mongoid to store audit logs instead of ActiveRecord. Furthermore it is capable of auditing both ActiveRecord and Mongoid models, which is especialy usefull for applications which use both backends.
 
 # What is this Gem about?
 
-It's a simple auditing solution for ActiveRecord and MongoID models. Provides an easy way of creating audit logs for complex model associations.
+It's a simple auditing solution for ActiveRecord and Mongoid models. Provides an easy way of creating audit logs for complex model associations.
 Instead of storing audits for all data aggregated by the audited model, you can specify a serializable representation of the model.
 mongoid_simple_audit is intended as a straightforward, performant and simple auditing solution.
     
   * a helper method is provided to easily display the audit log
   * the Audit object provides a #delta method which computes the differences between two audits
+
+## Requirements
+
+The gem requires Mongoid version 3.x with Ruby on Rails 3.x or Mongoid 4.x with Rails 4.x
 
 ## Installation
 
@@ -47,7 +51,7 @@ Don't forget to create the MongoDB indeces
   # in your view
   <%= render_audits(@booking) %>
 
-Audit ActiveRecord models. Somewhere in your (backend) views show the audit logs.
+Audit ActiveRecord or Mongoid models. Somewhere in your (backend) views show the audit logs.
     
     # in your model
     # app/models/booking.rb
@@ -57,6 +61,14 @@ Audit ActiveRecord models. Somewhere in your (backend) views show the audit logs
         ...
     end
     
+    # or for Mongoid
+
+    class Booking
+        include Mongoid::Document
+        simple_audit
+        ...
+    end    
+
     # in your view
     # app/views/bookings/booking.html.erb
     
@@ -141,6 +153,12 @@ only the differences between revisions will be shown, thus making the audit info
 4. It supports the Mongoid wrapper  
 
 Negative aspect though, its not working nicely hand in hand with not MongoDB backends
+
+## How to migrate simple_audit record stored with ActiveRecord
+
+If you want to migrate from the ActiveRecord version of simple_audit to a document based datamodel (maybe because your database got super fat), mongoid_simple_audit has a rake task for that.
+
+  rake mongoid_simple_audit:migrates_from_mysql_to_mongoid
 
 ## Contributing
 
