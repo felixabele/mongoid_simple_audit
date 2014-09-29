@@ -59,8 +59,13 @@ module Mongoid
 
             attributes_and_associations = proc do |record|
               changes = record.attributes
-              record.class.reflect_on_all_associations(:belongs_to).each do |assoc|
-                changes[assoc.name] = record.send(assoc.name).to_s
+              as_types = [:belongs_to]
+              as_types << :embeds_one if record.singleton_class.included_modules.include? Mongoid::Document
+
+              as_types.each do |as_type|
+                record.class.reflect_on_all_associations( as_type ).each do |assoc|
+                  changes[assoc.name] = record.send(assoc.name).to_s
+                end
               end
               changes
             end

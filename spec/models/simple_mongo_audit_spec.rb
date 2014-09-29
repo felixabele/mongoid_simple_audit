@@ -36,11 +36,6 @@ module Mongoid
       expect( person.audit.modifications.last.change_log ).to have_key( 'name' )
     end
 
-    it "should audit associated entity changes" do
-      person = create :person
-      expect( person.audit.modifications.last.change_log['address']['line_1'] ).to be_present
-    end
-
     it "should not audit if no changes where made" do
       person = create :person
       person.update_attributes name: person.name
@@ -55,10 +50,42 @@ module Mongoid
       expect( User.new.full_name ).to eql address.audit.modifications.last.username
     end
 
-    it 'should audit Mongoid models' do 
-      address = MongoidAddress.create(name: 'Hans', street: 'Sesamstr. 18')
-      expect( address.audit.modifications ).not_to be_empty
-    end    
+    # ----------------------------
+    # --- ActiveRecord specific Tests
+    # ----------------------------
+    context "ActiveRecord specific Tests" do
+
+      it "should audit associated entity changes" do
+        person = create :person, address: create(:address, line_1: 'Munich'), name: 'doe1'
+        create_audit = person.audit.modifications.last
+        person.address = create(:address, line_1: 'Berlin')
+        person.name = 'doe2'
+        person.save
+        update_audit = person.audit.modifications.last
+        expect( update_audit.delta(create_audit) ).to eql( {"name"=>["doe1", "doe2"], "address"=>[{"line_1"=>"Munich", "zip"=>"12047"}, {"line_1"=>"Berlin", "zip"=>"12047"}]} )
+      end      
+    end
+
+    # ----------------------------
+    # --- Mongoid specific Tests
+    # ----------------------------
+    context "Mongoid specific Tests" do
+
+      it 'should audit Mongoid models' do 
+        address = Mongodoc::Address.create(line_1: 'Hans', zip: '10928')
+        expect( address.audit.modifications ).not_to be_empty
+      end    
+
+      it "should audit associated entity changes" do
+        person = create :mongoid_person, address: create(:mongoid_address, line_1: 'Munich'), name: 'doe1'
+        create_audit = person.audit.modifications.last
+        person.address = create(:mongoid_address, line_1: 'Berlin')
+        person.name = 'doe2'
+        person.save
+        update_audit = person.audit.modifications.last
+        expect( update_audit.delta(create_audit) ).to eql( {"name"=>["doe1", "doe2"], "address"=>[{"line_1"=>"Munich", "zip"=>"12047"}, {"line_1"=>"Berlin", "zip"=>"12047"}]} )
+      end      
+    end
   end
 
 end  

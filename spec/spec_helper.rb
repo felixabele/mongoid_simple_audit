@@ -77,12 +77,6 @@ class Address < ActiveRecord::Base
   simple_audit( username_method: :full_name )
 end
 
-class MongoidAddress  
-  include Mongoid::Document
-  include Mongoid::Attributes::Dynamic if Mongoid::VERSION.to_i > 3
-  simple_audit
-end
-
 class Person < ActiveRecord::Base
   has_one :address
   simple_audit( audit_changes_only: true ) do |record|
@@ -90,6 +84,31 @@ class Person < ActiveRecord::Base
       name: record.name,
       address: { line_1: record.address.line_1, zip: record.address.zip }
     }
+  end
+end
+
+module Mongodoc
+  class Address  
+    include Mongoid::Document
+    field :line_1
+    field :zip
+    field :type
+
+    embeds_one :person, class_name: 'Mongodoc::Person'
+    simple_audit
+  end
+
+  class Person
+    include Mongoid::Document
+    field :name
+    field :email
+    embedded_in :address, class_name: 'Mongodoc::Address'
+    simple_audit( audit_changes_only: true ) do |record|
+      {
+        name: record.name,
+        address: { line_1: record.address.line_1, zip: record.address.zip }
+      }
+    end    
   end
 end
 
