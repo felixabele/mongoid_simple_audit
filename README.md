@@ -76,34 +76,10 @@ Audit ActiveRecord or Mongoid models. Somewhere in your (backend) views show the
     <%= render_audits(@booking) %>
     ...     
 
-## Sample styling
-      .audits {
-        clear: both;
-      }
-      .audit {
-        -moz-border-radius:8px;
-        -webkit-border-radius: 8px;
-        background-color: #dfdfdf;
-        padding: 6px;
-        margin-bottom: 8px;
-        font-size: 12px;
-      }
-      .audit .action, .audit .user, .audit .timestamp{
-        float: left;
-        margin-right: 6px;
-      }
-      .audit .changes {
-        clear: both;
-        white-space: pre;
-      }
+    # in order to have the default styles, include the stylesheet
 
-      .audit .current {
-        margin-left: 6px;
-      }
-      .audit .previous {
-        margin-left: 6px;
-        text-decoration: line-through;
-      }  
+    <%= stylesheet_link_tag 'mongoid_simple_audit' %>
+
 
 # Assumptions and limitations
 
