@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    mongoid_simple_audit (0.1.4)
+    mongoid_simple_audit (0.1.5)
       mongoid
 
 GEM
